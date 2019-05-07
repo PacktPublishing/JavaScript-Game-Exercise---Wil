@@ -1,0 +1,84 @@
+.score{
+    background-color: black;
+    color:white;
+    padding:15px;
+    font-size: 1.5em;
+    height:35px;
+}
+button {
+    padding:20px;
+    font-size:1.2em;
+    background-color: red;
+    color:white;
+    border-radius:25px;
+}
+.gameBoard{
+    background-color: burlywood;
+    border:1px solid black;
+    width:1000px;
+}
+.hideout{
+    display: inline-block;
+    margin: 10px;
+    width:20%;
+    height:250px;
+    overflow:hidden;
+    position:relative;
+}
+.bricks{
+    background-color: chocolate;
+    z-index: 10;
+    border-radius: 50px 50px 0 0;
+    position: absolute;
+    height: 50px;
+    bottom: 0px;
+    left:0px;
+    width: 100%;
+}
+
+.badGuy, .friend{
+    background-size:cover;
+    z-index:1;
+    position: absolute;
+    height:250px;
+    top:250px;
+    left:0px;
+    width:100%;
+    cursor: crosshair;
+    transition: all 0.4s;
+}
+
+.badGuy {
+    background-image: url(bd.png);  
+}
+.friend{
+    background-image: url(bd2.png);   
+}
+
+
+.hideout.up .badGuy{
+    top:0;   
+}
+.hideout.up2 .friend{
+    top:0;   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    

@@ -1,0 +1,162 @@
+<style>
+    .score {
+        background: black;
+        color: white;
+        padding: 15px;
+        font-size: 1.5em;
+        height: 35px;
+    }
+    
+    button {
+        padding: 20px;
+        font-size: 1.2em;
+        background-color: red;
+        color: white;
+        border-radius: 25px;
+    }
+    
+    .message {
+        font-size: 1em;
+        padding: 20px;
+    }
+    
+    .gameBoard {
+        width: 1000px;
+        margin: 0 auto;
+        border: 1px solid black;
+        background-color: burlywood;
+    }
+    
+    .hideout {
+        display: inline-block;
+        margin: 10px;
+        width: 20%;
+        height: 250px;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .bricks {
+        background-color: chocolate;
+        z-index: 10;
+        border-radius: 50px 50px 0 0;
+        position: absolute;
+        height: 50px;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+    }
+    
+    .badGuy,
+    .friend {
+        background-size: cover;
+        z-index: 1;
+        position: absolute;
+        height: 250px;
+        top: 250px;
+        left: 0px;
+        width: 100%;
+        cursor: crosshair;
+        transition: all 0.4s;
+    }
+    
+    .badGuy {
+        background-image: url(bd.png);
+    }
+    
+    .friend {
+        background-image: url(bd2.png);
+    }
+    
+    .wack {
+        max-width: 100%;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        display: none;
+    }
+    
+    .hideout.up .badGuy {
+        top: 0;
+    }
+    
+    .hideout.up2 .friend {
+        top: 0;
+    }
+</style>
+<div class="score"></div>
+<button class="btnStart">Start Game !</button>
+<div class="gameBoard"></div>
+<script>
+    const container = document.querySelector('.gameBoard');
+    const scoreboard = document.querySelector('.score');
+    const btnStart = document.querySelector('.btnStart');
+    let lasthideout;
+    let gameOver = false;
+    let score = 0;
+    btnStart.addEventListener('click', startGame);
+
+    function startGame() {
+        makeGameBoard();
+        startbadGuys();
+        scoreboard.innerHTML = score;
+    }
+
+    function startbadGuys() {
+        let hideout = randomPop();
+        let temp = Math.floor(Math.random() * 4) + 1;
+        let tempClass = temp > 1 ? 'up' : 'up2';
+        hideout.classList.add(tempClass);
+        const time = Math.round(Math.random() * (1500 - 250) + 250);
+        setTimeout(function () {
+            hideout.classList.remove(tempClass);
+            if (!gameOver) startbadGuys();
+        }, time);
+    }
+
+    function randomPop() {
+        let hideouts = document.querySelectorAll('.hideout');
+        const idx = Math.floor(Math.random() * hideouts.length);
+        if (hideouts[idx].badGuyID === lasthideout) {
+            return randomPop();
+        }
+        lasthideout = hideouts[idx].badGuyID;
+        return hideouts[idx];
+    }
+
+    function myShot(e) {
+        console.log(e);
+        score++;
+        this.parentNode.classList.remove('up');
+        scoreboard.innerHTML = score;
+    }
+
+    function myShot2(e) {
+        console.log('WRONG ONE');
+        score = score - 5;
+        this.parentNode.classList.remove('up2');
+        scoreboard.innerHTML = score;
+    }
+
+    function makeGameBoard() {
+        var badGuys = 8;
+        container.innerHTML = ' ';
+        for (var x = 0; x < badGuys; x++) {
+            var div = document.createElement('div');
+            div.setAttribute('class', 'hideout');
+            div.badGuyID = x;
+            var badGuy = document.createElement('div');
+            badGuy.setAttribute('class', 'badGuy');
+            badGuy.onclick = myShot;
+            div.appendChild(badGuy);
+            var friend = document.createElement('div');
+            friend.setAttribute('class', 'friend');
+            friend.onclick = myShot2;
+            div.appendChild(friend);
+            var bricks = document.createElement('div');
+            bricks.setAttribute('class', 'bricks');
+            div.appendChild(bricks);
+            container.appendChild(div);
+        }
+    }
+</script>
